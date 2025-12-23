@@ -12,12 +12,26 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     * This seeder is SAFE to run multiple times (idempotent)
      */
     public function run(): void
     {
-        // Call the UserSeeder
-        $this->call([
-            UserSeeder::class,
-        ]);
+        // Only seed if users table is empty (first time deployment)
+        if (User::count() === 0) {
+            $this->command->info('🚀 First deployment detected. Seeding database...');
+            
+            $this->call([
+                UserSeeder::class,
+                ProductSeeder::class,
+                OrderSeeder::class,
+                ArticleSeeder::class,
+                FaqSeeder::class,
+                ContactMessageSeeder::class,
+            ]);
+            
+            $this->command->info('✅ Database seeding completed!');
+        } else {
+            $this->command->info('⏭️ Database already seeded. Skipping...');
+        }
     }
 }

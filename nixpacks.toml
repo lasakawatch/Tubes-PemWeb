@@ -12,8 +12,10 @@ cmds = [
     'npm run build',
     'php artisan config:cache',
     'php artisan route:cache',
-    'php artisan view:cache'
+    'php artisan view:cache',
+    'mkdir -p storage/app/public/products',
+    'mkdir -p storage/app/public/articles'
 ]
 
 [start]
-cmd = 'php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}'
+cmd = 'php artisan migrate --force && php artisan db:seed --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}'
